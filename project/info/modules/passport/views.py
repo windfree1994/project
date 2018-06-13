@@ -45,6 +45,7 @@ def register():
     user.nick_name=mobile
     user.mobile = mobile
     #TODO 未加密
+
     user.password_hash=password
     # 保存到数据库中
     try:
@@ -55,6 +56,7 @@ def register():
         return jsonify(errno=RET.DBERR,errmsg='用户保存异常')
     # 返回注册到前段页面
     return jsonify(errno=RET.OK,errmsg='注册成功')
+
 
 # 生成短信验证码
 # 请求路径: /passport/sms_code

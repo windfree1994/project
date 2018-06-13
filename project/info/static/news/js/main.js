@@ -144,7 +144,29 @@ $(function(){
         }
 
         // 发起注册请求
+        //拼接参数
+        var params= {
+            'mobile':mobile,
+            'sms_code':smscode,
+            'password':password
+        }
+    //    发送请求注册用户
+        $.ajax({
+            url:'/passport/register',
+            type:'POST',
+            data:JSON.stringify(params),
+            contentType :'application/json',
+            success:function (resp) {
+                //判断是否注册成功
+                if (resp.errno =='0'){
+                    location.reload()
+                }else{
+                    $('#register-err').html(resp.errmsg)
+                    $('#register-err').show();
 
+                }
+            }
+        })
     })
 })
 
@@ -198,6 +220,7 @@ function sendSMSCode() {
             //    判断是否能成功
             if (resp.errno == '0') {
                 //    设置时间
+                num =60
                 //    开启定时器
                 var t = setInterval(function () {
                     //    判断是否已经倒计时完成
@@ -205,17 +228,17 @@ function sendSMSCode() {
                     //    清除定时器
                         clearInterval(t)
                     //    重新设置按钮可以点击
-                        $('.get_code').attr('onclick','sendMSCode()')
+                        $('.get_code').attr('onclick','sendSMSCode()')
                         $('.get_code').html('点击获取验证码')
                     }else{
                     //    倒计时
                         num -=1;
-                        $('.get_code').html(num+'秒')
+                        $('.get_code').html(num +'秒')
                     }
                 },1000)//1000毫秒 调用一次这个函数  1S
             }else{
                 alert(resp.errmsg)
-                $('.get_code').attr('onclick','sendMSCode()')
+                $('.get_code').attr('onclick','sendSMSCode()')
             //    更新图片验证码
                 generateImageCode()
             }
